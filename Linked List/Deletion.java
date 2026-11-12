@@ -1,16 +1,19 @@
 import java.util.Scanner;
 
-class Node 
+class Node
 {
     private int data;
     private Node next;
+    private Node prev;
     public Node(int data)
     {
-        this.data = data;
+        this.data=data;
+        prev=null;
+        next=null;
     }
     public void setData(int data)
     {
-        this.data = data;
+        this.data=data;
     }
     public int getData()
     {
@@ -18,11 +21,19 @@ class Node
     }
     public void setNext(Node next)
     {
-        this.next = next;
+        this.next=next;
     }
     public Node getNext()
     {
         return this.next;
+    }
+    public void setPrev(Node prev)
+    {
+        this.prev=prev;
+    }
+    public Node getPrev()
+    {
+        return this.prev;
     }
 }
 class Deletion
@@ -30,128 +41,117 @@ class Deletion
     Node head=null, q=null;
     public void create(int data)
     {
-        Node ptr = new Node(data);
+        Node ptr=new Node(data);
         if(head==null)
         {
             head=ptr;
-            ptr.setNext(null);
             q=ptr;
         }
         else{
             q.setNext(ptr);
-            ptr.setNext(null);
+            ptr.setPrev(q);
             q=ptr;
         }
-        System.out.println("Node created successfully");
     }
+
     public static void main(String args[])
     {
         Scanner s = new Scanner(System.in);
-        Deletion obj =new Deletion();
+        Deletion obj = new Deletion();
         int n, choice;
         do{
-            System.out.println("If you want to insert node then press 1 otherwise 0 : ");
+            System.out.println("If you want to create node then press 1 otherwise 0 : ");
             choice = s.nextInt();
             if(choice!=0)
             {
-                System.out.println("Enter your node data : ");
-                n =s.nextInt();
+                System.out.println("ENter node data : ");
+                n = s.nextInt();
                 obj.create(n);
             }
         }while(choice!=0);
-        Node ptr = obj.head;
-        while(ptr!=null)
-        {
+        Node ptr=obj.head;
+        while (ptr!=null) {
             System.out.print(ptr.getData()+"->");
-            ptr = ptr.getNext();
+            ptr=ptr.getNext();
         }
         System.out.println("NULL");
-        // deletion process
-        // delete from begining
-        // Node p = obj.head;
+
+        //deletion process
+        //deletion from begining
+        // Node p=obj.head;
         // if(p==null)
         // {
         //     System.out.println("Linked list is empty so underflow");
         //     return;
         // }
+        // else if(p.getNext()==null)
+        // {
+        //     obj.head=null;
+        //     p=null;
+        // }
         // else{
+        //     p.getNext().setPrev(null);
         //     obj.head=p.getNext();
         //     p=null;
         // }
         // System.out.println("Node deleted from begining");
-        
-        // Node ref = obj.head;
-        // while(ref!=null)
-        // {
-        //     System.out.print(ref.getData()+"->");  
-        //     ref=ref.getNext();
-        // }
-        // System.out.println("NULL");
-        
-        //deletion from end
-        // Node r = obj.head, p=obj.head;
-        // if(r==null)
+
+        //delete from end
+        // Node p=obj.head;
+        // if(p==null)
         // {
         //     System.out.println("Linked list is empty so underflow");
         //     return;
         // }
-        // else if(r.getNext()==null)
-        // {
+        // else if(p.getNext()==null){
         //     obj.head=null;
-        //     r=null;
+        //     p=null;
         // }
         // else{
-        //     while(r.getNext()!=null)
+        //     while(p.getNext()!=null)
         //     {
-        //         p=r;
-        //         r=r.getNext();
+        //         p=p.getNext();
         //     }
-        //     if(r.getNext()==null)
+        //     if(p.getNext()==null)
         //     {
-        //         p.setNext(null);
-        //         r=null;
+        //         p.getPrev().setNext(null);
+        //         p=null;
         //     }
         // }
-        // System.out.println("Node deleted from end");
-        // Node ref = obj.head;
-        // while(ref!=null)
-        // {
-        //     System.out.print(ref.getData()+"->");
-        //     ref=ref.getNext();
-        // }
-        // System.out.println("NULL");
+        // System.out.println("Node deleted from ending successfuly");
 
-        //delete from given node
-        Node r=obj.head, p=obj.head;
-        System.out.println("Enter your node data that you want to delete : ");
-        int delData = s.nextInt();
-        if(r==null)
+        //deletion from given node
+        Node p=obj.head;
+        System.out.println("Enter your target node to be delete : ");
+        int delNode = s.nextInt();
+        if(p==null)
         {
-            System.out.println("Linked list is empty so underflow");
+            System.out.println("Linked list is empty so underflow ");
             return;
         }
-        else if(r.getData()==delData)
+        else if(p.getData()==delNode)
         {
-            obj.head=obj.head.getNext();
-            r=null;
+            p.getNext().setPrev(null);
+            obj.head=p.getNext();
+            p=null;
         }
         else{
-            while(r.getData()!=delData && r.getNext()!=null)
+            while(p.getData()!=delNode && p.getNext()!=null)
             {
-                p=r;
-                r=r.getNext();
+                p=p.getNext();
             }
-            if(r.getData()==delData)
+            if(p.getData()==delNode)
             {
-                p.setNext(r.getNext());
-                r=null;
-            }
-            else{
-                System.out.println("Node not found");
+                p.getPrev().setNext(p.getNext());
+                p.getNext().setPrev(p.getPrev());
+                p=null;
             }
         }
+        System.out.println("Node deleted successfully");
+
         Node ref = obj.head;
-        while(ref!=null) {
+        while(ref!=null)
+        {
             System.out.print(ref.getData()+"->");
             ref=ref.getNext();
         }
